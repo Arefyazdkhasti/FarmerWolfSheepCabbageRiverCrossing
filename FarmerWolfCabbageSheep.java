@@ -55,6 +55,7 @@
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 public class FarmerWolfCabbageSheep
 {
@@ -100,10 +101,10 @@ public class FarmerWolfCabbageSheep
     {
         private String bank; // The active bank where the farmer is currently
                              // located
-        private ArrayList<String> left, right; // left and right bank with its
-                                               // occupants.
+        private TreeSet<String> left, right; // left and right bank with its
+                                             // occupants.
 
-        public State(String bank, ArrayList<String> left, ArrayList<String> right)
+        public State(String bank, TreeSet<String> left, TreeSet<String> right)
         {
             this.bank = bank;
             this.left = left;
@@ -120,7 +121,7 @@ public class FarmerWolfCabbageSheep
          *            occupants
          * @return true if puzzle constraints are met, false otherwise.
          */
-        private boolean checkAllowBank(ArrayList<String> b)
+        private boolean checkAllowBank(TreeSet<String> b)
         {
             // Wolf and Sheep together without Farmer
             if (b.contains("W") && b.contains("S") && (b.contains("F") == false))
@@ -172,8 +173,8 @@ public class FarmerWolfCabbageSheep
         public State transits(String move)
         {
             String nbank;
-            ArrayList<String> nleft = new ArrayList<String>();
-            ArrayList<String> nright = new ArrayList<String>();
+            TreeSet<String> nleft = new TreeSet<String>();
+            TreeSet<String> nright = new TreeSet<String>();
 
             if (bank.equalsIgnoreCase("left"))
                 nbank = "right";
@@ -212,7 +213,7 @@ public class FarmerWolfCabbageSheep
          * Method to duplicate/copy a representation of the river bank and its
          * occupants from source to destination.
          */
-        private void copylist(ArrayList<String> src, ArrayList<String> dst)
+        private void copylist(TreeSet<String> src, TreeSet<String> dst)
         {
             for (String e : src)
                 dst.add(e);
@@ -227,7 +228,7 @@ public class FarmerWolfCabbageSheep
          */
         public boolean compare(State s)
         {
-            ArrayList<String> tmp;
+            TreeSet<String> tmp;
 
             if (!s.getBank().equalsIgnoreCase(bank))
                 return false;
@@ -254,12 +255,12 @@ public class FarmerWolfCabbageSheep
             return bank;
         }
 
-        public ArrayList<String> getLeft()
+        public TreeSet<String> getLeft()
         {
             return left;
         }
 
-        public ArrayList<String> getRight()
+        public TreeSet<String> getRight()
         {
             return right;
         }
@@ -339,13 +340,13 @@ public class FarmerWolfCabbageSheep
      */
     public void startGraphSearch()
     {
-        ArrayList<String> left = new ArrayList<String>();
+        TreeSet<String> left = new TreeSet<String>();
         left.add("W");
         left.add("S");
         left.add("C");
         left.add("F");
 
-        State inits = new State("left", left, new ArrayList<String>());
+        State inits = new State("left", left, new TreeSet<String>());
         root = new Node(inits);
         root.level = 0;
         queue.add(root);
