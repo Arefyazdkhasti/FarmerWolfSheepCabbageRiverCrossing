@@ -338,7 +338,7 @@ public class FarmerWolfCabbageSheep
      * Method to start the creation of the state graph using breadth first
      * search, transiting to allowable states
      */
-    public void startGraphSearch()
+    public void startBreadthFirstSearch()
     {
         TreeSet<String> left = new TreeSet<String>();
         left.add("W");
@@ -395,9 +395,93 @@ public class FarmerWolfCabbageSheep
     }
 
     /**
+     * Method to start the creation of the state graph using iterative depth
+     * first search
+     */
+    public void startDepthFirstSearch()
+    {
+
+        int dlimit = 1; // Maximum depth limit
+        solutions = new ArrayList<Node>(); // Initialize solutions to zero
+
+        while (solutions.size() == 0 && dlimit <= 10)
+        {
+            TreeSet<String> left = new TreeSet<String>();
+            left.add("W");
+            left.add("S");
+            left.add("C");
+            left.add("F");
+
+            State inits = new State("left", left, new TreeSet<String>());
+            root = new Node(inits);
+            root.level = 0;
+
+            System.out.println("Starting iterative DFS with depth: " + dlimit);
+            startDFS(dlimit, root);
+            dlimit++;
+        }
+
+    }
+
+    /**
+     * Recursive Method to create the state graph using Depth first search (DFS)
+     * 
+     * @param depth limit of the DFS search
+     * @param Node that holds current state
+     */
+    public void startDFS(int depth, Node r)
+    {
+        if (depth == 0)
+        {
+            System.out.println("Maximum depth limit");
+            return;
+        }
+
+        System.out.println("Processing Level " + r.level + " " + r.data);
+
+        for (String m : moves)
+        {
+            State s = r.data.transits(m);
+
+            if (s != null && s.isAllow()) // Check if it is allowable state
+            {
+
+                Node child = new Node(s);
+                child.parent = r;
+                child.level = r.level + 1;
+                child.move = m + " moves " + child.data.getBank();
+
+                if (!child.isAncestor()) // Check that the node doesn't occur
+                                         // already as an ancestor
+                {
+                    r.adjlist.add(child);
+
+                    if (child.data.isSolution())
+                    {// Found a solution
+
+                        solutions.add(child);
+                        System.out.println("Found solution " + child.data);
+                        return;
+                    }
+                    else
+                    {// Recursive call
+                        startDFS(depth - 1, child);
+                    }
+
+                }
+            }
+
+        }
+
+        // No valid states
+        return;
+
+    }
+
+    /**
      * Prints out the entire state graph using breadth first search
      */
-    public void printGraph()
+    public void printBFSGraph()
     {
         ArrayList<Node> queue = new ArrayList<Node>();
 
@@ -477,13 +561,23 @@ public class FarmerWolfCabbageSheep
         FarmerWolfCabbageSheep obj = new FarmerWolfCabbageSheep();
 
         System.out.println("Creating State Graph using Breadth First Search");
-        obj.startGraphSearch();
+        obj.startBreadthFirstSearch();
 
         System.out.println("\n\nState Graph in Breadth first order");
-        obj.printGraph();
+        obj.printBFSGraph();
         System.out.println("\n\n");
 
-        System.out.println("Solutions to the River Crossing Puzzle");
+        System.out.println("Solutions to the River Crossing Puzzle BFS");
+        obj.printSolution();
+
+        System.out.println("\n\nCreating State Graph using Iterative Depth First Search");
+        obj.startDepthFirstSearch();
+
+        System.out.println("\n\nState Graph in Breadth first order");
+        obj.printBFSGraph();
+        System.out.println("\n\n");
+
+        System.out.println("Solutions to the River Crossing Puzzle Iterative DFS");
         obj.printSolution();
 
     }
