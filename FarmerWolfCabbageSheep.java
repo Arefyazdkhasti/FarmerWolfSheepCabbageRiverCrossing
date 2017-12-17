@@ -112,12 +112,12 @@ public class FarmerWolfCabbageSheep
         }
 
         /**
-         * Takes a ArrayList<String> that contains the occupants in a river bank
+         * Takes a TreeSet<String> that contains the occupants in a river bank
          * (left or right) and check whether the puzzle constraints Wolf , sheep
          * cannot be together without farmer Cabbage, sheep cannot be together
          * without farmer are met.
          * 
-         * @param b An ArrayList<String> representing the river bank with its
+         * @param b An TreeSet<String> representing the river bank with its
          *            occupants
          * @return true if puzzle constraints are met, false otherwise.
          */
