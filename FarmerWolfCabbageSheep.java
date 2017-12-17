@@ -340,6 +340,7 @@ public class FarmerWolfCabbageSheep
      */
     public void startBreadthFirstSearch()
     {
+        solutions = new ArrayList<Node>(); // Initialize solutions to zero
         TreeSet<String> left = new TreeSet<String>();
         left.add("W");
         left.add("S");
